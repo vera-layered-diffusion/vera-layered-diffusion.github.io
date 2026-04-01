@@ -1,2 +1,1 @@
-# vera-model.github.io
-test
+# Website for Vera Project

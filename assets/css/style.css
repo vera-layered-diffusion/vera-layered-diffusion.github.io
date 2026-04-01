@@ -1,0 +1,545 @@
+.hr {
+  width: 100%;
+  height: 1px;
+  margin: 48px 0;
+  background-color: #d6dbdf;
+}
+
+.is-3-c {
+  font-size: 2.2rem !important;
+}
+
+.container.is-max-desktop.head {
+  max-width: 95%;
+}
+
+.button.is-rounded:hover {
+  transform: scale(1.02);
+  background-color: #4a6cf7;
+}
+
+.hero-body {
+  padding-top: 0.6rem !important;
+}
+
+/* Method figure frame */
+.method-figure-frame {
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+/* Joint output wrapper for hover overlay */
+.joint-output-wrapper {
+  display: inline-grid;
+  position: relative;
+  justify-items: stretch;
+  max-width: 100%;
+}
+
+.joint-output-wrapper video {
+  grid-area: 1 / 1 / 2 / 2;
+  width: 100%;
+  max-height: 360px;
+  height: auto;
+  display: block;
+}
+
+.joint-output-heatmap {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s linear;
+}
+
+.joint-output-wrapper:hover .joint-output-heatmap {
+  opacity: 1;
+}
+
+/* Thumbnail scene pills */
+.scene-pill {
+  cursor: pointer;
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 5px;
+  background: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  margin-right: 30px;
+  margin-bottom: 10px;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+.scene-pill img {
+  width: 64px;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.scene-pill:hover {
+  transform: scale(1.10);
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+.scene-pill.active {
+  transform: scale(1.25);
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 3px rgba(0, 0, 0, 0.25),
+    5px 5px 10px rgba(0, 0, 0, 0.48),
+    2px 2px 5px rgba(0, 0, 0, 0.10);
+}
+
+.video.demo-video {
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Hover hint badge */
+.hover-hint {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.10),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.1px;
+  font-style: italic;
+}
+
+.joint-output-wrapper:hover .hover-hint {
+  opacity: 0;
+}
+
+/* Demo block card */
+.demo-block {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 32px;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.16),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Pill rows */
+.pill-row {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.pill-row-comparison {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+/* Video container column spacing */
+.video-container .column {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.demo-hint {
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 450;
+  font-style: italic;
+  letter-spacing: 0.1px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* Prompt display */
+.prompt-display {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* twentytwenty overrides for comparison section */
+.comparison-container .twentytwenty-overlay:hover {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+.comparison-container {
+  cursor: pointer;
+}
+
+.comparison-container .twentytwenty-handle {
+  cursor: ew-resize;
+}
+
+.comparison-container .twentytwenty-before-label,
+.comparison-container .twentytwenty-after-label {
+  opacity: 1 !important;
+}
+
+.twentytwenty-horizontal .comparison-container .twentytwenty-before-label:before,
+.twentytwenty-horizontal .comparison-container .twentytwenty-after-label:before {
+  font-size: 12px !important;
+  padding: 4px 12px !important;
+  line-height: 20px !important;
+}
+
+/* Baseline dropdown */
+.baseline-dropdown {
+  font-size: 15px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  appearance: auto;
+}
+
+.baseline-dropdown:hover {
+  border-color: #4a6cf7;
+}
+
+.baseline-dropdown:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+}
+
+/* Vera brand font */
+.vera-brand {
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+}
+
+/* Gradient title (STeP-style) */
+.gradient-title {
+  font-weight: 700;
+  background: linear-gradient(107.54deg, #0078d4 .39%, #8661c5 51.23%, #ff9349 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* TL;DR callout card (STeP gradient block style) */
+.tldr-card {
+  background: linear-gradient(107.54deg, #e6eff7 .39%, #eeebf5 51.23%, #fcf4ee 100%);
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin: 24px auto 0;
+  max-width: 860px;
+  text-align: justify;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #3f3f3f;
+}
+
+/* Results table */
+.results-table {
+  font-size: 14px;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.results-table th,
+.results-table td {
+  padding: 6px 10px;
+  text-align: center;
+  border-bottom: 1px solid #e8e8e8;
+  white-space: nowrap;
+}
+
+.results-table th {
+  font-weight: 600;
+  background: #fafafa;
+  border-bottom: 2px solid #ddd;
+}
+
+.results-table th.col-group {
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #555;
+}
+
+.results-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.results-table .group-header td {
+  text-align: left;
+  font-weight: 600;
+  padding-top: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid #ccc;
+  background: transparent;
+}
+
+.results-table .highlight-row {
+  background: rgba(74, 108, 247, 0.08);
+}
+
+.results-table .highlight-row td:first-child {
+  font-weight: 600;
+  color: #4a6cf7;
+}
+
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* BibTeX block */
+.bibtex-wrapper {
+  position: relative;
+}
+
+.bibtex-wrapper pre {
+  background: #f0f4ff;
+}
+
+.bibtex-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 5px 9px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+
+.bibtex-copy-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* Floating TOC (Notion style) */
+.floating-toc {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 12px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-width: 130px;
+}
+
+.floating-toc.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #999;
+  padding: 0 16px 8px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 4px;
+}
+
+.floating-toc .toc-item {
+  display: block;
+  padding: 5px 16px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #777;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  line-height: 1.4;
+}
+
+.floating-toc .toc-item:hover {
+  color: #333;
+  background: #f7f7f7;
+}
+
+.floating-toc .toc-item.active {
+  color: #4a6cf7;
+  font-weight: 500;
+  border-left-color: #4a6cf7;
+  background: rgba(74, 108, 247, 0.04);
+}
+
+/* Dataset section: layered data samples grid */
+.data-video-container {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 4px;
+}
+
+.data-grid-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px 6px;
+  align-items: start;
+}
+
+.data-grid-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a6cf7;
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.data-cell {
+  text-align: center;
+  min-width: 0;
+}
+
+.data-cell .data-demo-video {
+  width: 100%;
+  max-height: 360px;
+  height: auto;
+  vertical-align: middle;
+}
+
+.data-instruction {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  line-height: 1.4;
+  padding: 6px 4px 14px;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  min-height: 2.8em;
+  box-sizing: border-box;
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.data-instruction:last-of-type {
+  border-bottom: none;
+}
+
+/* Mobile responsive */
+@media only screen and (max-width: 767px) {
+  .teaser .content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .container {
+    padding-left: 2px;
+    padding-right: 2px;
+    max-width: 100%;
+  }
+
+  .demo-block {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .method-figure-frame {
+    padding: 2px !important;
+    transform: scale(1.1);
+    transform-origin: center;
+    margin-bottom: 5px !important;
+  }
+
+  .method-figure-frame img {
+    width: 100% !important;
+    display: block;
+  }
+
+  .pill-row,
+  .pill-row-comparison {
+    gap: 12px !important;
+  }
+
+  .floating-toc {
+    display: none;
+  }
+
+  .results-table {
+    font-size: 12px;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 4px 6px;
+  }
+
+  .data-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .data-grid-header {
+    display: none;
+  }
+
+  .data-cell::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a6cf7;
+    margin-bottom: 4px;
+  }
+}

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Vera: A Layered Diffusion Model for Content-Preserving Video Editing">
+  <meta name="keywords" content="Vera, Video Editing, Diffusion Models, Layered Generation, Content Preservation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vera</title>
+
+  <style>.hr {width: 100%; height: 1px; margin: 48px 0; background-color: #d6dbdf;}</style>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="floating-toc" id="floating-toc">
+  <div class="toc-title">Contents</div>
+  <a href="#teaser" class="toc-item">Demo</a>
+  <a href="#method" class="toc-item">Method</a>
+  <a href="#comparisons" class="toc-item">Qualitative Comparisons</a>
+  <a href="#results" class="toc-item">Quantitative Results</a>
+  <a href="#user-study" class="toc-item">User Study</a>
+  <a href="#dataset" class="toc-item">Data</a>
+</nav>
+
+<!-- ==================== TITLE ==================== -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop head">
+      <div class="columns is-centered">
+        <div class="column has-text-centered head">
+          <h1 class="title is-2 publication-title gradient-title">
+            Vera: A Layered Diffusion Model for Content-Preserving Video Editing
+          </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="https://devzhk.github.io/" target="_blank">Hongkai Zheng</a><sup>1,2&dagger;</sup>,&nbsp;&nbsp;</span>
+            <span class="author-block"><a href="https://ttchengab.github.io/" target="_blank">Ta-Ying Cheng</a><sup>2</sup>,&nbsp;&nbsp;</span>
+            <span class="author-block"><a href="https://scholar.google.com/citations?user=xkX9W9QAAAAJ&amp;hl=en" target="_blank">Benjamin Klein</a><sup>2</sup>,&nbsp;&nbsp;</span>
+            <span class="author-block"><a href="https://yisongyue.com/" target="_blank">Yisong Yue</a><sup>1</sup>,&nbsp;&nbsp;</span>
+            <span class="author-block"><a href="https://zhuoning.cc/" target="_blank">Zhuoning Yuan</a><sup>2,&Dagger;</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>California Institute of Technology,&nbsp;</span>
+            <span class="author-block"><sup>2</sup>Netflix, Inc.</span>
+          </div>
+          <span class="author-block"><sup>&dagger;</sup>Work done during an internship at Netflix</span>
+          <br>
+          <span class="author-block"><sup>&Dagger;</sup>Project Lead</span>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/Netflix/vera.git" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <!-- Weights (vera-14B) -->
+              <span class="link-block">
+                <a href="https://huggingface.co/netflix/Vera-MoT-14B" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon" aria-hidden="true">🤗</span>
+                  <span>Vera-14B</span>
+                </a>
+              </span>
+              <!-- Weights (vera-1.3B) -->
+              <span class="link-block">
+                <a href="https://huggingface.co/netflix/Vera-MoT-1.3B" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon" aria-hidden="true">🤗</span>
+                  <span>Vera-1.3B</span>
+                </a>
+              </span>
+              <!-- Dataset -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/hzzheng/vera-data-mini" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon" aria-hidden="true">🤗</span>
+                  <span>Data</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#BibTeX"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-quote-right"></i></span>
+                  <span>BibTeX</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+          <div class="tldr-card">
+            <b>TL;DR:</b> A layered diffusion framework for content-preserving video editing.
+            Instead of regenerating every pixel, Vera generates an <b>edit layer</b> and an <b>alpha matte</b>
+            for compositing with the source video, separating creative editing from content preservation by design.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TEASER DEMO ==================== -->
+<section class="section hero is-small" id="teaser">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="row bg-dark">
+        <div class="demo-block">
+          <div class="has-text-centered text-center">
+            <div class="pill-row" id="teaser-pills">
+              <span class="scene-pill active" onclick="selectTeaserScene('turtle', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/turtle.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('driftwood', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/driftwood.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('swan', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/swan.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('fox', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/fox.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('cyclist', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/cyclist.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('violinist', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/violinist.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('driftcar', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/driftcar.jpg" width="64">
+              </span>
+              <span class="scene-pill" onclick="selectTeaserScene('sheepherder', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/sheepherder.jpg" width="64">
+              </span>
+            </div>
+
+            <div class="prompt-display" id="teaser-prompt">
+              "Add a massive sea turtle with a textured olive-green shell and weathered flippers swimming gracefully..."
+            </div>
+
+            <div class="demo-hint">(Click on any video to pause)</div>
+
+            <div id="teaser-video-container" class="video-container">
+              <div class="columns" style="margin-bottom: 0;">
+                <div class="column has-text-centered">
+                  <video id="teaser-input" class="video demo-video" loop playsinline autoplay muted>
+                    <source src="./assets/videos/turtle_input.mp4" type="video/mp4">
+                  </video>
+                  <div class="demo-video-label" style="margin-top: 8px;">Input</div>
+                </div>
+                <div class="column has-text-centered">
+                  <div class="joint-output-wrapper" id="teaser-edit-wrapper">
+                    <span class="hover-hint" id="teaser-edit-hint" style="display:none;">Hover for alpha matte</span>
+                    <video id="teaser-edit" class="video demo-video joint-output" loop playsinline autoplay muted>
+                      <source src="./assets/videos/turtle_edit_checker_1.3b.mp4" type="video/mp4">
+                    </video>
+                    <video id="teaser-edit-checker" class="video demo-video joint-output joint-output-heatmap" loop playsinline autoplay muted>
+                      <source src="./assets/videos/turtle_edit_checker_1.3b.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="demo-video-label" style="margin-top: 8px;">Edit Layer</div>
+                </div>
+                <div class="column has-text-centered">
+                  <video id="teaser-composite" class="video demo-video" loop playsinline autoplay muted>
+                    <source src="./assets/videos/turtle_vera_1.3b.mp4" type="video/mp4">
+                  </video>
+                  <div class="demo-video-label" style="margin-top: 8px;">Composite</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== METHOD ==================== -->
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-10">
+        <h2 class="title is-3 gradient-title">Method</h2>
+
+        <h3 class="title is-5" style="margin-bottom: 0.5rem;">Inference Pipeline</h3>
+        <div class="method-figure-frame">
+          <img src="./assets/figures/inference-v2.png" alt="Vera inference pipeline" />
+        </div>
+
+        <div class="content has-text-justified" style="margin-bottom: 2rem;">
+          <p>
+            Given a source video and a text editing instruction, Vera's MoT architecture jointly generates an edit layer, an alpha matte, and a composite video. The edit layer and alpha matte are then composited with the source video to produce the final edited output.
+          </p>
+        </div>
+
+        <h3 class="title is-5" style="margin-bottom: 0.5rem;">MoT Architecture</h3>
+        <div class="method-figure-frame">
+          <img src="./assets/figures/vera-arch.png" />
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            We extend the text-to-video DiT into a <b>Mixture-of-Transformers (MoT)</b> architecture.
+            Separate DiTs process the edit layer, alpha matte, and composite video independently,
+            while interacting through <b>joint self-attention</b> to ensure coherent edits that
+            blend seamlessly with the original content.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BASELINE COMPARISONS ==================== -->
+<section class="section hero is-small" id="comparisons">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="row bg-dark">
+        <div class="demo-block">
+          <div class="has-text-centered text-center">
+            <h2 class="title is-3 gradient-title">Results | Qualitative Comparisons</h2>
+
+            <div style="margin-bottom: 8px;">
+              <span class="category-label" style="font-weight:600; color:#4a6cf7; font-size:14px;">Object Addition</span>
+            </div>
+            <div class="pill-row" id="comparison-pills-obj">
+              <span class="scene-pill comp-pill active" onclick="selectComparisonScene('knight', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/knight.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('collie', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/collie.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('beachball', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/beachball.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('swan', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/swan.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('fox', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/fox.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('panda', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/panda.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('driftwood', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/driftwood.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('turtle', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/turtle.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('bear', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/bear.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('jogger', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/jogger.jpg" width="64">
+              </span>
+            </div>
+
+            <div style="margin-bottom: 8px; margin-top: 12px;">
+              <span class="category-label" style="font-weight:600; color:#4a6cf7; font-size:14px;">Background Change</span>
+            </div>
+            <div class="pill-row" id="comparison-pills-bg">
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('violinist', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/violinist.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('sheepherder', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/sheepherder.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('cyclist', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/cyclist.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('driftcar', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/driftcar.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('guitarist', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/guitarist.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('breakdancer', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/breakdancer.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('snowjogger', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/snowjogger.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('coatwoman', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/coatwoman.jpg" width="64">
+              </span>
+              <span class="scene-pill comp-pill" onclick="selectComparisonScene('horserider', this)">
+                <img class="thumbnail-img" src="assets/thumbnails/horserider.jpg" width="64">
+              </span>
+            </div>
+
+            <div class="prompt-display" id="comparison-prompt">
+              "Add a medieval knight in polished silver plate armor walking steadily on the sand..."
+            </div>
+
+            <div style="text-align:center; margin-bottom: 12px;">
+              <label for="model-select" style="font-weight:500; margin-right:8px;">Ours:</label>
+              <select id="model-select" onchange="onModelChange()" class="baseline-dropdown">
+                <option value="vera_14b" selected>Vera-14B</option>
+                <option value="vera_1.3b">Vera-1.3B</option>
+              </select>
+              <span style="display:inline-block; width:24px;"></span>
+              <label for="baseline-select" style="font-weight:500; margin-right:8px;">Baseline:</label>
+              <select id="baseline-select" onchange="onBaselineChange()" class="baseline-dropdown">
+                <option value="vace_14b">VACE-14B</option>
+                <option value="vace_1.3b">VACE-1.3B</option>
+                <option value="reco">ReCo</option>
+                <option value="videopainter">VideoPainter</option>
+                <option value="layerflow">LayerFlow</option>
+                <option value="lucy_edit">Lucy Edit</option>
+                <option value="ditto">Ditto</option>
+              </select>
+            </div>
+
+            <div class="demo-hint">(Click on any video to pause &middot; Hover over outputs for difference heatmap)</div>
+
+            <div id="comparison-video-container" class="video-container">
+              <div class="columns" style="margin-bottom: 0;">
+                <div class="column has-text-centered">
+                  <video id="comparison-input" class="video demo-video" loop playsinline autoplay muted>
+                    <source src="./assets/videos/knight_input.mp4" type="video/mp4">
+                  </video>
+                  <div class="demo-video-label" style="margin-top: 8px;">Input</div>
+                </div>
+                <div class="column has-text-centered">
+                  <div class="joint-output-wrapper">
+                    <span class="hover-hint">Hover for diff</span>
+                    <video id="comparison-vera" class="video demo-video joint-output" loop playsinline autoplay muted>
+                      <source src="./assets/videos/knight_vera.mp4" type="video/mp4">
+                    </video>
+                    <video id="comparison-heatmap" class="video demo-video joint-output joint-output-heatmap" loop playsinline autoplay muted>
+                      <source src="./assets/videos/knight_heatmap.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="demo-video-label" style="margin-top: 8px;" id="model-label">Vera-14B</div>
+                </div>
+                <div class="column has-text-centered">
+                  <div class="joint-output-wrapper">
+                    <span class="hover-hint">Hover for diff</span>
+                    <video id="comparison-baseline" class="video demo-video joint-output" loop playsinline autoplay muted>
+                      <source src="./assets/videos/knight_vace_14b.mp4" type="video/mp4">
+                    </video>
+                    <video id="comparison-baseline-heatmap" class="video demo-video joint-output joint-output-heatmap" loop playsinline autoplay muted>
+                      <source src="./assets/videos/knight_vace_14b_heatmap.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="demo-video-label" style="margin-top: 8px;" id="baseline-label">VACE-14B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== QUANTITATIVE RESULTS ==================== -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-10">
+        <h2 class="title is-3 gradient-title">Results | Quantitative Comparisons</h2>
+        <div class="content has-text-justified" style="margin-bottom: 1.5rem;">
+          <p>
+            Comparison with existing video editing methods.
+            VLM-based metrics (CS, CT, IS) are averaged over three VLMs.
+            OC and TF are near-identical across models and not bolded.
+            Best results in other columns are in <b>bold</b>.
+          </p>
+        </div>
+        <div class="table-container">
+          <table class="table results-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Method</th>
+                <th colspan="3" class="col-group">Content Preservation</th>
+                <th colspan="4" class="col-group">Video Quality</th>
+                <th colspan="2" class="col-group">Instruction Compliance</th>
+              </tr>
+              <tr>
+                <th>PSNR &uarr;</th>
+                <th>SSIM &uarr;</th>
+                <th>LPIPS &darr;</th>
+                <th>OC &uarr;</th>
+                <th>TF &uarr;</th>
+                <th>CS &uarr;</th>
+                <th>CT &uarr;</th>
+                <th>OSC &uarr;</th>
+                <th>IS &uarr;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group-header"><td colspan="10"><em>Background Change</em></td></tr>
+              <tr><td>Ditto</td><td>21.7</td><td>0.888</td><td>0.092</td><td>0.97</td><td>0.97</td><td>3.29</td><td>3.25</td><td>0.240</td><td>4.26</td></tr>
+              <tr><td>Lucy-Edit</td><td>22.3</td><td>0.908</td><td>0.078</td><td>0.96</td><td>0.96</td><td>2.50</td><td>2.50</td><td>0.235</td><td>3.71</td></tr>
+              <tr><td>VideoPainter</td><td>29.9</td><td>0.975</td><td>0.032</td><td>0.83</td><td>0.97</td><td>2.29</td><td>2.31</td><td>0.237</td><td>3.64</td></tr>
+              <tr><td>VACE-1.3B</td><td>31.5</td><td>0.981</td><td>0.024</td><td>0.96</td><td>0.97</td><td><b>3.74</b></td><td><b>3.61</b></td><td><b>0.245</b></td><td><b>4.48</b></td></tr>
+              <tr><td>VACE-14B</td><td>31.7</td><td>0.983</td><td>0.021</td><td>0.96</td><td>0.96</td><td>3.68</td><td>3.59</td><td>0.243</td><td>4.44</td></tr>
+              <tr><td>ReCo</td><td>24.9</td><td>0.935</td><td>0.061</td><td>0.96</td><td>0.97</td><td>2.45</td><td>2.71</td><td>0.220</td><td>3.05</td></tr>
+              <tr class="highlight-row"><td>Vera-1.3B</td><td>35.2</td><td><b>0.993</b></td><td><b>0.010</b></td><td>0.96</td><td>0.97</td><td>3.34</td><td>3.25</td><td>0.243</td><td>4.35</td></tr>
+              <tr class="highlight-row"><td>Vera-14B</td><td><b>36.2</b></td><td><b>0.993</b></td><td><b>0.010</b></td><td>0.96</td><td>0.97</td><td>3.28</td><td>3.21</td><td>0.242</td><td>4.38</td></tr>
+              <tr class="group-header"><td colspan="10"><em>Object Addition</em></td></tr>
+              <tr><td>Ditto</td><td>13.1</td><td>0.447</td><td>0.529</td><td>0.98</td><td>0.98</td><td>2.84</td><td>3.13</td><td>0.239</td><td>3.62</td></tr>
+              <tr><td>Lucy-Edit</td><td>19.0</td><td>0.798</td><td>0.301</td><td>0.98</td><td>0.98</td><td>2.54</td><td>2.79</td><td>0.238</td><td>2.98</td></tr>
+              <tr><td>VideoPainter</td><td>10.7</td><td>0.354</td><td>0.669</td><td>0.64</td><td>0.98</td><td>2.54</td><td>2.80</td><td>0.247</td><td>2.87</td></tr>
+              <tr><td>VACE-1.3B</td><td>10.3</td><td>0.323</td><td>0.667</td><td>0.98</td><td>0.98</td><td>2.55</td><td>3.01</td><td><b>0.250</b></td><td>2.99</td></tr>
+              <tr><td>VACE-14B</td><td>10.1</td><td>0.325</td><td>0.666</td><td>0.98</td><td>0.98</td><td>2.63</td><td>3.08</td><td>0.248</td><td>3.26</td></tr>
+              <tr><td>ReCo</td><td>16.8</td><td>0.778</td><td>0.280</td><td>0.98</td><td>0.98</td><td>3.18</td><td>3.35</td><td>0.243</td><td>3.77</td></tr>
+              <tr class="highlight-row"><td>Vera-1.3B</td><td>25.3</td><td>0.949</td><td><b>0.078</b></td><td>0.98</td><td>0.98</td><td>3.49</td><td>3.47</td><td>0.243</td><td>4.05</td></tr>
+              <tr class="highlight-row"><td>Vera-14B</td><td><b>26.1</b></td><td><b>0.950</b></td><td>0.082</td><td>0.98</td><td>0.98</td><td><b>3.59</b></td><td><b>3.66</b></td><td>0.244</td><td><b>4.13</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== USER STUDY ==================== -->
+<section class="section" id="user-study">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-10">
+        <h2 class="title is-3 gradient-title">Results | User Preference Study</h2>
+        <div class="content has-text-justified" style="margin-bottom: 1.5rem;">
+          <p>
+            2AFC user study results comparing Vera-1.3B against five baselines. Bars show our win rate across three
+            evaluation dimensions. Bold values with * indicate statistically significant results (p &lt; 0.05, binomial test) where our model is preferred.
+          </p>
+        </div>
+        <div class="method-figure-frame">
+          <img src="./assets/figures/user_study_winrates_by_edit_type.png" style="width:100%;" alt="User study win rates by edit type" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DATASET ==================== -->
+<section class="section hero is-small" id="dataset">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="row bg-dark">
+        <div class="demo-block">
+          <div class="has-text-centered text-center">
+            <h2 class="title is-3 gradient-title">Data</h2>
+            <div class="content has-text-justified" style="margin-bottom: 1.5rem; max-width: 920px; margin-left: auto; margin-right: auto;">
+              <p>
+                To train Vera, we construct a layered dataset from open-source videos with accurate alpha mattes, diverse scenes and dynamics, and visual effects.
+                The full corpus contains <b>486K frames</b> at 832&times;480 resolution, organized into three complementary subsets:
+                <b>synthetic composites</b> derived from VideoMatte240K with inpainted backgrounds;
+                <b>realistic single-object videos</b> from Pexels and Mixkit with natural camera motion; and
+                <b>realistic multi-object videos with effects</b> including shadows and reflections.
+                Below are representative samples per subset: each row shows the input video, alpha matte, edit layer (RGB), and target composite, with the text editing instruction.
+              </p>
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <label for="dataset-subset-select" style="font-weight:500; margin-right:8px;">Subset:</label>
+              <select id="dataset-subset-select" class="baseline-dropdown" onchange="onDatasetSubsetChange()">
+                <option value="synthetic-bg-change">Synthetic &mdash; Background Change</option>
+                <option value="synthetic-obj-add">Synthetic &mdash; Object Addition</option>
+                <option value="real-set1-obj-add" selected>Realistic (single-obj) &mdash; Object Addition</option>
+                <option value="real-set1-bg-change">Realistic (single-obj) &mdash; Background Change</option>
+                <option value="real-set2-obj-add-effects-cleaned">Realistic (multi-obj) &mdash; Object Addition</option>
+              </select>
+            </div>
+            <div class="demo-hint">(Click any video to pause or resume that row)</div>
+            <div id="dataset-video-container" class="video-container data-video-container">
+              <div class="data-grid-wrapper">
+                <div class="data-grid" id="dataset-video-grid">
+            <div class="data-grid-header">Input Video</div>
+            <div class="data-grid-header">Alpha Matte</div>
+            <div class="data-grid-header">Edit Layer</div>
+            <div class="data-grid-header">Composite</div>
+
+            <div class="data-cell" data-label="Input Video">
+              <video id="dataset-r0-input" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Alpha Matte">
+              <video id="dataset-r0-alpha" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Edit Layer">
+              <video id="dataset-r0-edit" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Composite">
+              <video id="dataset-r0-composite" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-instruction" id="dataset-instruction-0" title=""></div>
+
+            <div class="data-cell" data-label="Input Video">
+              <video id="dataset-r1-input" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Alpha Matte">
+              <video id="dataset-r1-alpha" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Edit Layer">
+              <video id="dataset-r1-edit" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Composite">
+              <video id="dataset-r1-composite" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-instruction" id="dataset-instruction-1" title=""></div>
+
+            <div class="data-cell" data-label="Input Video">
+              <video id="dataset-r2-input" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Alpha Matte">
+              <video id="dataset-r2-alpha" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Edit Layer">
+              <video id="dataset-r2-edit" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-cell" data-label="Composite">
+              <video id="dataset-r2-composite" class="video demo-video data-demo-video" loop playsinline autoplay muted>
+                <source src="" type="video/mp4">
+              </video>
+            </div>
+            <div class="data-instruction" id="dataset-instruction-2" title=""></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BIBTEX ==================== -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title gradient-title">BibTeX</h2>
+    <div class="bibtex-wrapper">
+      <button class="bibtex-copy-btn" onclick="copyBibtex(this)" title="Copy to clipboard">
+        <i class="far fa-copy"></i> Copy
+      </button>
+      <pre><code id="bibtex-code">@article{zheng2026vera,
+    title     = {Vera: A Layered Diffusion Model for Content-Preserving Video Editing},
+    author    = {Zheng, Hongkai and Cheng, Ta-Ying and Klein, Benjamin and Yue, Yisong and Yuan, Zhuoning},
+    journal   = {arXiv preprint},
+    year      = {2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <div class="columns is-centered"><p>
+            This website is adapted from
+            <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a> and
+            <a href="https://microsoft.github.io/TRELLIS/" target="_blank">Trellis</a>.
+          </p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script src="./assets/js/bulma-carousel.min.js"></script>
+<script src="./assets/js/bulma-slider.min.js"></script>
+<script src="./assets/js/index.js"></script>
+<script src="./assets/js/dataset-samples.js"></script>
+
+<script>
+const TEASER_SCENES = {
+  'turtle': {
+    input: './assets/videos/turtle_input.mp4',
+    edit:  './assets/videos/turtle_edit_checker_1.3b.mp4',
+    edit_checker: null,
+    composite: './assets/videos/turtle_vera_1.3b.mp4',
+    prompt: 'Add a massive sea turtle with a textured olive-green shell and weathered flippers swimming gracefully in the upper right open water area, propelling itself forward with slow rhythmic strokes while facing left in a three-quarter view, soft cool natural daylight from the top illuminating the patterns on its shell. Medium-wide shot, eye-level, everything in focus.'
+  },
+  'driftwood': {
+    input: './assets/videos/driftwood_input.mp4',
+    edit:  './assets/videos/driftwood_edit_1.3b.mp4',
+    edit_checker: null,
+    composite: './assets/videos/driftwood_vera_1.3b.mp4',
+    prompt: 'Add a large, weathered grey driftwood log lying horizontally on the sand to the left of the girl in the foreground, facing diagonally toward the water, with rough textured bark illuminated by the high sun. Medium shot, eye-level, sharp background.'
+  },
+  'swan': {
+    input: './assets/videos/swan_input.mp4',
+    edit:  './assets/videos/swan_edit_checker.mp4',
+    edit_checker: null,
+    composite: './assets/videos/swan_vera.mp4',
+    prompt: 'Add a graceful white swan gliding smoothly across the calm water in the foreground from left to right, its long neck curved elegantly and head held high, facing right in profile, with soft diffuse light illuminating its bright feathers against the dark lake surface. Wide shot, eye-level, everything in focus.'
+  },
+  'fox': {
+    input: './assets/videos/fox_input.mp4',
+    edit:  './assets/videos/fox_edit_checker.mp4',
+    edit_checker: null,
+    composite: './assets/videos/fox_vera.mp4',
+    prompt: 'Add a red fox with vibrant orange fur, white chest, and a bushy tail standing amidst the tall wheat on the left side of the frame, pausing to look curiously toward the camera.'
+  },
+  'cyclist': {
+    input: './assets/videos/cyclist_input.mp4',
+    edit:  './assets/videos/cyclist_edit.mp4',
+    edit_checker: './assets/videos/cyclist_edit_checker.mp4',
+    composite: './assets/videos/cyclist_vera.mp4',
+    prompt: 'Change the background to a winding coastal highway in California with crashing ocean waves visible on the side, seagulls gliding overhead against the blue sky.'
+  },
+  'violinist': {
+    input: './assets/videos/violinist_input.mp4',
+    edit:  './assets/videos/violinist_edit.mp4',
+    edit_checker: './assets/videos/violinist_edit_checker.mp4',
+    composite: './assets/videos/violinist_vera.mp4',
+    prompt: 'Change the background to an elegant concert hall practice room with dust motes dancing in the air above polished wooden floors and rows of empty velvet seats.'
+  },
+  'driftcar': {
+    input: './assets/videos/driftcar_input.mp4',
+    edit:  './assets/videos/driftcar_edit.mp4',
+    edit_checker: './assets/videos/driftcar_edit_checker.mp4',
+    composite: './assets/videos/driftcar_vera.mp4',
+    prompt: 'Change the background to a frozen mountain pass with snow-covered pine trees, powder snow spray kicking up from the wheels, ice crystals sparkling in the air, distant jagged peaks sharp against the blue sky, hard natural daylight from the top.'
+  },
+  'sheepherder': {
+    input: './assets/videos/sheepherder_input.mp4',
+    edit:  './assets/videos/sheepherder_edit.mp4',
+    edit_checker: './assets/videos/sheepherder_edit_checker.mp4',
+    composite: './assets/videos/sheepherder_vera.mp4',
+    prompt: 'Change the background to a vast green grassland with a flock of sheep grazing peacefully in the background, rolling hills stretching toward the horizon under a wide open sky, soft warm natural sunlight.'
+  }
+};
+
+const ALL_EXAMPLES = [
+  'knight','collie','beachball','swan','fox','panda','driftwood','turtle','bear','jogger',
+  'violinist','sheepherder','cyclist','driftcar','guitarist','breakdancer','snowjogger','coatwoman','horserider'
+];
+
+const EXAMPLE_PROMPTS = {
+  knight: 'Add a medieval knight in polished silver plate armor walking steadily on the sand to the left of the horse...',
+  collie: 'Add a black and white Border Collie with a glossy coat sitting alertly on the court surface...',
+  beachball: 'Add a vibrant red and white beach ball resting motionless on the sand to the right of the girl...',
+  swan: 'Add a graceful white swan gliding smoothly across the calm water in the foreground from left to right...',
+  fox: 'Add a red fox with vibrant orange fur, white chest, and a bushy tail standing amidst the tall wheat...',
+  panda: 'Add a large black and white panda sitting on its haunches on the right side of the path, holding a green bamboo stalk...',
+  driftwood: 'Add a large, weathered grey driftwood log lying horizontally on the sand to the left of the girl...',
+  turtle: 'Add a massive sea turtle with a textured olive-green shell and weathered flippers swimming gracefully...',
+  bear: 'Add a large brown bear with thick, dark fur dancing playfully in the center foreground...',
+  jogger: 'Add a young woman in a fitted black running top and grey leggings jogging steadily down the center of the road...',
+  violinist: 'Change the background to an elegant concert hall practice room with dust motes dancing in the air...',
+  sheepherder: 'Change the background to a vast green grassland with a flock of sheep grazing peacefully...',
+  cyclist: 'Change the background to a winding coastal highway in California with crashing ocean waves...',
+  driftcar: 'Change the background to a frozen mountain pass with snow-covered pine trees, powder snow spray...',
+  guitarist: 'Change the background to a blurred rainy London street corner with a red double-decker bus...',
+  breakdancer: 'Change the background to a wet pavement in a foggy London park with yellow autumn leaves...',
+  snowjogger: 'Change the background to a snowy mountain landscape with jagged peaks in the distance...',
+  coatwoman: 'Change the background to a foggy London bridge at dawn with the gothic architecture of Tower Bridge...',
+  horserider: 'Change the background to a misty coastline with grey ocean waves gently rolling onto the wet sand...'
+};
+
+const BASELINE_DISPLAY = {
+  'vace_14b': 'VACE-14B',
+  'vace_1.3b': 'VACE-1.3B',
+  'reco': 'ReCo',
+  'videopainter': 'VideoPainter',
+  'layerflow': 'LayerFlow',
+  'lucy_edit': 'Lucy Edit',
+  'ditto': 'Ditto'
+};
+
+let currentCompScene = 'knight';
+let currentModel = 'vera_14b';
+let currentBaseline = 'vace_14b';
+
+const MODEL_DISPLAY = {
+  'vera_14b': 'Vera-14B',
+  'vera_1.3b': 'Vera-1.3B'
+};
+
+function setDatasetVideoSource(id, src) {
+  const v = document.getElementById(id);
+  const source = v.querySelector('source');
+  source.src = src;
+  v.load();
+  const p = v.play();
+  if (p && p.catch) p.catch(function () {});
+}
+
+function loadDatasetSubset(datasetName) {
+  const samples = DATA_SAMPLES.filter(function (s) { return s.dataset_name === datasetName; });
+  for (let i = 0; i < 3; i++) {
+    const s = samples[i];
+    const prefix = DATA_VIDEO_BASE;
+    const inst = document.getElementById('dataset-instruction-' + i);
+    if (s) {
+      setDatasetVideoSource('dataset-r' + i + '-input', prefix + s.input_video_path);
+      setDatasetVideoSource('dataset-r' + i + '-alpha', prefix + s.edit_alpha_path);
+      setDatasetVideoSource('dataset-r' + i + '-edit', prefix + s.edit_rgb_path);
+      setDatasetVideoSource('dataset-r' + i + '-composite', prefix + s.target_composite_path);
+      inst.textContent = '"' + s.edit_instruction + '"';
+      inst.title = s.edit_instruction;
+    } else {
+      ['dataset-r' + i + '-input', 'dataset-r' + i + '-alpha', 'dataset-r' + i + '-edit', 'dataset-r' + i + '-composite'].forEach(function (vid) {
+        const v = document.getElementById(vid);
+        v.querySelector('source').src = '';
+        v.load();
+      });
+      inst.textContent = '';
+      inst.title = '';
+    }
+  }
+}
+
+function onDatasetSubsetChange() {
+  loadDatasetSubset(document.getElementById('dataset-subset-select').value);
+}
+
+function setupDatasetRow(rowIndex) {
+  const ids = ['dataset-r' + rowIndex + '-input', 'dataset-r' + rowIndex + '-alpha', 'dataset-r' + rowIndex + '-edit', 'dataset-r' + rowIndex + '-composite'];
+  const videos = ids.map(function (id) { return document.getElementById(id); });
+  const master = videos[0];
+  let isSyncing = false;
+  let lastSync = 0;
+  function syncRow() {
+    if (isSyncing) return;
+    const now = Date.now();
+    if (now - lastSync < 100) return;
+    lastSync = now;
+    const t = master.currentTime;
+    isSyncing = true;
+    for (let j = 1; j < 4; j++) {
+      if (Math.abs(videos[j].currentTime - t) > 0.05) videos[j].currentTime = t;
+    }
+    isSyncing = false;
+  }
+  master.addEventListener('timeupdate', syncRow);
+  videos.forEach(function (v) {
+    v.addEventListener('click', function () {
+      const paused = videos.some(function (x) { return x.paused; });
+      videos.forEach(function (x) {
+        if (paused) x.play().catch(function () {});
+        else x.pause();
+      });
+    });
+  });
+}
+
+function animatePill(el) {
+  el.classList.add('clicked');
+  setTimeout(() => el.classList.remove('clicked'), 120);
+}
+
+function switchVideos(videoElements, sources, container, callback) {
+  videoElements.forEach(v => v && v.pause());
+  container.style.opacity = '0';
+  container.style.pointerEvents = 'none';
+
+  sources.forEach(([video, src]) => {
+    video.querySelector('source').src = src;
+  });
+
+  let loaded = 0;
+  const total = videoElements.filter(v => v).length;
+
+  function onLoaded() {
+    loaded++;
+    if (loaded === total) {
+      container.style.opacity = '1';
+      container.style.pointerEvents = 'auto';
+      videoElements.forEach(v => {
+        if (!v) return;
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});
+      });
+      if (callback) callback();
+    }
+  }
+
+  videoElements.forEach(v => {
+    if (!v) return;
+    v.load();
+    v.addEventListener('canplaythrough', onLoaded, { once: true });
+    v.addEventListener('error', onLoaded, { once: true });
+  });
+}
+
+function selectTeaserScene(key, pillEl) {
+  animatePill(pillEl);
+  const cfg = TEASER_SCENES[key];
+  if (!cfg) return;
+
+  const inputV = document.getElementById('teaser-input');
+  const editV = document.getElementById('teaser-edit');
+  const editCheckerV = document.getElementById('teaser-edit-checker');
+  const compositeV = document.getElementById('teaser-composite');
+  const container = document.getElementById('teaser-video-container');
+  const hint = document.getElementById('teaser-edit-hint');
+
+  document.getElementById('teaser-prompt').textContent = '"' + cfg.prompt + '"';
+
+  const hasBgHover = !!cfg.edit_checker;
+  hint.style.display = hasBgHover ? '' : 'none';
+
+  const sources = [
+    [inputV, cfg.input],
+    [editV, cfg.edit],
+    [compositeV, cfg.composite]
+  ];
+  if (hasBgHover) {
+    sources.push([editCheckerV, cfg.edit_checker]);
+  } else {
+    sources.push([editCheckerV, cfg.edit]);
+  }
+
+  switchVideos(
+    [inputV, editV, editCheckerV, compositeV],
+    sources,
+    container
+  );
+
+  document.querySelectorAll('#teaser-pills .scene-pill').forEach(p => p.classList.remove('active'));
+  pillEl.classList.add('active');
+}
+
+function getModelVideoPath(scene, model) {
+  if (model === 'vera_14b') return './assets/videos/' + scene + '_vera.mp4';
+  return './assets/videos/' + scene + '_vera_1.3b.mp4';
+}
+
+function getModelHeatmapPath(scene, model) {
+  if (model === 'vera_14b') return './assets/videos/' + scene + '_heatmap.mp4';
+  return './assets/videos/' + scene + '_vera_1.3b_heatmap.mp4';
+}
+
+function loadComparisonVideos() {
+  const inputV = document.getElementById('comparison-input');
+  const veraV = document.getElementById('comparison-vera');
+  const heatmapV = document.getElementById('comparison-heatmap');
+  const baselineV = document.getElementById('comparison-baseline');
+  const blHeatmapV = document.getElementById('comparison-baseline-heatmap');
+  const container = document.getElementById('comparison-video-container');
+
+  document.getElementById('comparison-prompt').textContent = '"' + EXAMPLE_PROMPTS[currentCompScene] + '"';
+  document.getElementById('model-label').textContent = MODEL_DISPLAY[currentModel];
+  document.getElementById('baseline-label').textContent = BASELINE_DISPLAY[currentBaseline];
+
+  switchVideos(
+    [inputV, veraV, heatmapV, baselineV, blHeatmapV],
+    [
+      [inputV, './assets/videos/' + currentCompScene + '_input.mp4'],
+      [veraV, getModelVideoPath(currentCompScene, currentModel)],
+      [heatmapV, getModelHeatmapPath(currentCompScene, currentModel)],
+      [baselineV, './assets/videos/' + currentCompScene + '_' + currentBaseline + '.mp4'],
+      [blHeatmapV, './assets/videos/' + currentCompScene + '_' + currentBaseline + '_heatmap.mp4']
+    ],
+    container
+  );
+}
+
+function selectComparisonScene(key, pillEl) {
+  animatePill(pillEl);
+  currentCompScene = key;
+  document.querySelectorAll('.comp-pill').forEach(p => p.classList.remove('active'));
+  pillEl.classList.add('active');
+  loadComparisonVideos();
+}
+
+function onModelChange() {
+  currentModel = document.getElementById('model-select').value;
+  loadComparisonVideos();
+}
+
+function onBaselineChange() {
+  currentBaseline = document.getElementById('baseline-select').value;
+  loadComparisonVideos();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Teaser: initial load fade-in
+  const teaserVideos = ['teaser-input', 'teaser-edit', 'teaser-edit-checker', 'teaser-composite']
+    .map(id => document.getElementById(id));
+  const teaserContainer = document.getElementById('teaser-video-container');
+
+  let teaserLoaded = 0;
+  const teaserTotal = teaserVideos.filter(v => v).length;
+  teaserContainer.style.opacity = '0';
+  teaserContainer.style.pointerEvents = 'none';
+
+  function onTeaserLoaded() {
+    teaserLoaded++;
+    if (teaserLoaded === teaserTotal) {
+      teaserContainer.style.opacity = '1';
+      teaserContainer.style.pointerEvents = 'auto';
+    }
+  }
+
+  teaserVideos.forEach(v => {
+    if (!v) return;
+    if (v.readyState >= 3) onTeaserLoaded();
+    else {
+      v.addEventListener('canplaythrough', onTeaserLoaded, { once: true });
+      v.addEventListener('error', onTeaserLoaded, { once: true });
+    }
+  });
+
+  // Teaser: sync edit-checker overlay to edit video
+  const teaserEditV = document.getElementById('teaser-edit');
+  const teaserEditCheckerV = document.getElementById('teaser-edit-checker');
+  function syncTeaserEditChecker() {
+    if (teaserEditV && teaserEditCheckerV && Math.abs(teaserEditCheckerV.currentTime - teaserEditV.currentTime) > 0.05) {
+      teaserEditCheckerV.currentTime = teaserEditV.currentTime;
+    }
+  }
+  if (teaserEditV) {
+    teaserEditV.addEventListener('timeupdate', syncTeaserEditChecker);
+  }
+
+  function setTeaserPlayState(shouldPlay) {
+    teaserVideos.forEach(v => {
+      if (!v) return;
+      if (shouldPlay) v.play().catch(() => {});
+      else v.pause();
+    });
+  }
+
+  teaserVideos.forEach(v => {
+    if (!v) return;
+    v.addEventListener('click', function () {
+      const paused = teaserVideos.some(vv => vv && vv.paused);
+      setTeaserPlayState(paused);
+    });
+  });
+
+  // Comparison: initial load fade-in
+  const compVideos = ['comparison-input', 'comparison-vera', 'comparison-heatmap', 'comparison-baseline', 'comparison-baseline-heatmap']
+    .map(id => document.getElementById(id));
+  const compContainer = document.getElementById('comparison-video-container');
+
+  let compLoaded = 0;
+  const compTotal = compVideos.filter(v => v).length;
+  compContainer.style.opacity = '0';
+  compContainer.style.pointerEvents = 'none';
+
+  function onCompLoaded() {
+    compLoaded++;
+    if (compLoaded === compTotal) {
+      compContainer.style.opacity = '1';
+      compContainer.style.pointerEvents = 'auto';
+    }
+  }
+
+  compVideos.forEach(v => {
+    if (!v) return;
+    if (v.readyState >= 3) onCompLoaded();
+    else {
+      v.addEventListener('canplaythrough', onCompLoaded, { once: true });
+      v.addEventListener('error', onCompLoaded, { once: true });
+    }
+  });
+
+  // Comparison: sync heatmaps to their respective videos
+  const compVeraV = document.getElementById('comparison-vera');
+  const compHeatmapV = document.getElementById('comparison-heatmap');
+  const compBaselineV = document.getElementById('comparison-baseline');
+  const compBlHeatmapV = document.getElementById('comparison-baseline-heatmap');
+  let isSyncingHeatmap = false;
+  let lastSyncHeatmap = 0;
+
+  function syncCompHeatmaps() {
+    if (isSyncingHeatmap) return;
+    const now = Date.now();
+    if (now - lastSyncHeatmap < 100) return;
+    lastSyncHeatmap = now;
+    isSyncingHeatmap = true;
+    if (compVeraV && compHeatmapV && Math.abs(compHeatmapV.currentTime - compVeraV.currentTime) > 0.05) {
+      compHeatmapV.currentTime = compVeraV.currentTime;
+    }
+    if (compBaselineV && compBlHeatmapV && Math.abs(compBlHeatmapV.currentTime - compBaselineV.currentTime) > 0.05) {
+      compBlHeatmapV.currentTime = compBaselineV.currentTime;
+    }
+    setTimeout(() => { isSyncingHeatmap = false; }, 0);
+  }
+
+  if (compVeraV) {
+    compVeraV.addEventListener('timeupdate', syncCompHeatmaps);
+    compVeraV.addEventListener('seeked', syncCompHeatmaps);
+  }
+  if (compBaselineV) {
+    compBaselineV.addEventListener('timeupdate', syncCompHeatmaps);
+    compBaselineV.addEventListener('seeked', syncCompHeatmaps);
+  }
+
+  // Comparison: sync all videos to input
+  const compInput = document.getElementById('comparison-input');
+  let isSyncingComp = false;
+  let lastSyncComp = 0;
+
+  function syncCompVideos() {
+    if (isSyncingComp) return;
+    const now = Date.now();
+    if (now - lastSyncComp < 100) return;
+    lastSyncComp = now;
+    if (!compInput) return;
+    isSyncingComp = true;
+    const t = compInput.currentTime;
+    compVideos.forEach(v => {
+      if (v && v !== compInput && Math.abs(v.currentTime - t) > 0.05) {
+        v.currentTime = t;
+      }
+    });
+    setTimeout(() => { isSyncingComp = false; }, 0);
+  }
+
+  if (compInput) {
+    compInput.addEventListener('timeupdate', syncCompVideos);
+  }
+
+  function setCompPlayState(shouldPlay) {
+    compVideos.forEach(v => {
+      if (!v) return;
+      if (shouldPlay) v.play().catch(() => {});
+      else v.pause();
+    });
+    if (!shouldPlay) {
+      isSyncingComp = false; lastSyncComp = 0; syncCompVideos();
+      isSyncingHeatmap = false; lastSyncHeatmap = 0; syncCompHeatmaps();
+    }
+  }
+
+  compVideos.forEach(v => {
+    if (!v) return;
+    v.addEventListener('click', function () {
+      const paused = compVideos.some(vv => vv && vv.paused);
+      setCompPlayState(paused);
+    });
+  });
+
+  const datasetSelect = document.getElementById('dataset-subset-select');
+  if (datasetSelect) {
+    loadDatasetSubset(datasetSelect.value);
+    for (let r = 0; r < 3; r++) setupDatasetRow(r);
+  }
+
+  // Floating TOC: show/hide and highlight active section
+  const toc = document.getElementById('floating-toc');
+  const tocItems = toc.querySelectorAll('.toc-item');
+  const sectionIds = Array.from(tocItems).map(a => a.getAttribute('href').slice(1));
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocItems.forEach(item => item.classList.remove('active'));
+        const match = toc.querySelector('[href="#' + entry.target.id + '"]');
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(sec => observer.observe(sec));
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 300) toc.classList.add('visible');
+    else toc.classList.remove('visible');
+  }, { passive: true });
+});
+
+function copyBibtex(btn) {
+  const code = document.getElementById('bibtex-code').textContent;
+  navigator.clipboard.writeText(code).then(function () {
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(function () { btn.innerHTML = '<i class="far fa-copy"></i> Copy'; }, 1500);
+  });
+}
+</script>
+
+</body>
+</html>
