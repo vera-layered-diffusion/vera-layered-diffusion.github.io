@@ -174,12 +174,12 @@
                 </div>
                 <div class="column has-text-centered">
                   <div class="joint-output-wrapper" id="teaser-edit-wrapper">
-                    <span class="hover-hint" id="teaser-edit-hint" style="display:none;">Hover for alpha matte</span>
+                    <span class="hover-hint" id="teaser-edit-hint">Hover for edit layer</span>
                     <video id="teaser-edit" class="video demo-video joint-output" loop playsinline autoplay muted>
                       <source src="./assets/videos/turtle_edit_checker_1.3b.mp4" type="video/mp4">
                     </video>
                     <video id="teaser-edit-checker" class="video demo-video joint-output joint-output-heatmap" loop playsinline autoplay muted>
-                      <source src="./assets/videos/turtle_edit_checker_1.3b.mp4" type="video/mp4">
+                      <source src="./assets/videos/turtle_edit_1.3b.mp4" type="video/mp4">
                     </video>
                   </div>
                   <div class="demo-video-label" style="margin-top: 8px;">Edit Layer</div>
@@ -471,12 +471,11 @@
             <h2 class="title is-3 gradient-title">Data</h2>
             <div class="content has-text-justified" style="margin-bottom: 1.5rem; max-width: 920px; margin-left: auto; margin-right: auto;">
               <p>
-                Our dataset is constructed through our automated data pipeline (see paper) combined with manual annotation effort from the authors.
-                To train Vera, we construct a layered dataset from open-source videos with accurate alpha mattes, diverse scenes and dynamics, and visual effects.
+                We construct a layered dataset to train our model using data pipelines that combine automated tools with manual annotations (see paper for details).
                 The full corpus contains <b>486K frames</b> at 832&times;480 resolution, organized into three complementary subsets:
-                <b>synthetic composites</b> derived from VideoMatte240K with inpainted backgrounds;
+                <b>synthetic composites</b> derived from VideoMatte240K with synthetic backgrounds;
                 <b>realistic single-object videos</b> from Pexels and Mixkit with natural camera motion; and
-                <b>realistic multi-object videos with effects</b> including shadows and reflections.
+                <b>realistic multi-object videos with effects</b> including shadows, reflections, occlusion, etc.
                 Below are representative samples per subset: each row shows the input video, alpha matte, edit layer (RGB), and target composite, with the text editing instruction.
               </p>
             </div>
@@ -620,28 +619,32 @@ const TEASER_SCENES = {
   'turtle': {
     input: './assets/videos/turtle_input.mp4',
     edit:  './assets/videos/turtle_edit_checker_1.3b.mp4',
-    edit_checker: null,
+    edit_checker: './assets/videos/turtle_edit_1.3b.mp4',
+    hover_hint: 'Hover for edit layer',
     composite: './assets/videos/turtle_vera_1.3b.mp4',
     prompt: 'Add a massive sea turtle with a textured olive-green shell and weathered flippers swimming gracefully in the upper right open water area, propelling itself forward with slow rhythmic strokes while facing left in a three-quarter view, soft cool natural daylight from the top illuminating the patterns on its shell. Medium-wide shot, eye-level, everything in focus.'
   },
   'driftwood': {
     input: './assets/videos/driftwood_input.mp4',
-    edit:  './assets/videos/driftwood_edit_1.3b.mp4',
-    edit_checker: null,
+    edit:  './assets/videos/driftwood_edit_checker_1.3b.mp4',
+    edit_checker: './assets/videos/driftwood_edit_1.3b.mp4',
+    hover_hint: 'Hover for edit layer',
     composite: './assets/videos/driftwood_vera_1.3b.mp4',
     prompt: 'Add a large, weathered grey driftwood log lying horizontally on the sand to the left of the girl in the foreground, facing diagonally toward the water, with rough textured bark illuminated by the high sun. Medium shot, eye-level, sharp background.'
   },
   'swan': {
     input: './assets/videos/swan_input.mp4',
     edit:  './assets/videos/swan_edit_checker.mp4',
-    edit_checker: null,
+    edit_checker: './assets/videos/swan_edit.mp4',
+    hover_hint: 'Hover for edit layer',
     composite: './assets/videos/swan_vera.mp4',
     prompt: 'Add a graceful white swan gliding smoothly across the calm water in the foreground from left to right, its long neck curved elegantly and head held high, facing right in profile, with soft diffuse light illuminating its bright feathers against the dark lake surface. Wide shot, eye-level, everything in focus.'
   },
   'fox': {
     input: './assets/videos/fox_input.mp4',
     edit:  './assets/videos/fox_edit_checker.mp4',
-    edit_checker: null,
+    edit_checker: './assets/videos/fox_edit.mp4',
+    hover_hint: 'Hover for edit layer',
     composite: './assets/videos/fox_vera.mp4',
     prompt: 'Add a red fox with vibrant orange fur, white chest, and a bushy tail standing amidst the tall wheat on the left side of the frame, pausing to look curiously toward the camera.'
   },
@@ -844,6 +847,7 @@ function selectTeaserScene(key, pillEl) {
 
   const hasBgHover = !!cfg.edit_checker;
   hint.style.display = hasBgHover ? '' : 'none';
+  hint.textContent = cfg.hover_hint || 'Hover for alpha matte';
 
   const sources = [
     [inputV, cfg.input],

@@ -1,0 +1,11 @@
+[project]
+name = "vera-website"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy",
+    "imageio",
+    "imageio-ffmpeg",
+    "matplotlib",
+    "hydra-core>=1.3.2",
+]
