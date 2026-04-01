@@ -131,31 +131,50 @@
       <div class="row bg-dark">
         <div class="demo-block">
           <div class="has-text-centered text-center">
-            <div class="pill-row" id="teaser-pills">
-              <span class="scene-pill active" onclick="selectTeaserScene('turtle', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/turtle.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('driftwood', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/driftwood.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('swan', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/swan.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('fox', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/fox.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('cyclist', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/cyclist.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('violinist', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/violinist.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('driftcar', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/driftcar.jpg" width="64">
-              </span>
-              <span class="scene-pill" onclick="selectTeaserScene('sheepherder', this)">
-                <img class="thumbnail-img" src="assets/thumbnails/sheepherder.jpg" width="64">
-              </span>
+            <div id="teaser-pills">
+              <div class="pill-row">
+                <span class="scene-pill active" onclick="selectTeaserScene('turtle', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/turtle.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('driftwood', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/driftwood.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('swan', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/swan.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('fox', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/fox.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('cyclist', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/cyclist.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('violinist', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/violinist.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('driftcar', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/driftcar.jpg" width="64">
+                </span>
+              </div>
+              <div class="pill-row">
+                <span class="scene-pill" onclick="selectTeaserScene('sheepherder', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/sheepherder.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('desertsuv', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/desertsuv.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('rainguitarist', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/rainguitarist.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('alpscyclist', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/alpscyclist.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('sunrisejogger', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/sunrisejogger.jpg" width="64">
+                </span>
+                <span class="scene-pill" onclick="selectTeaserScene('duffelbag', this)">
+                  <img class="thumbnail-img" src="assets/thumbnails/duffelbag.jpg" width="64">
+                </span>
+              </div>
             </div>
 
             <div class="prompt-display" id="teaser-prompt">
@@ -675,6 +694,43 @@ const TEASER_SCENES = {
     edit_checker: './assets/videos/sheepherder_edit_checker.mp4',
     composite: './assets/videos/sheepherder_vera.mp4',
     prompt: 'Change the background to a vast green grassland with a flock of sheep grazing peacefully in the background, rolling hills stretching toward the horizon under a wide open sky, soft warm natural sunlight.'
+  },
+  'desertsuv': {
+    input: './assets/videos/desertsuv_input.mp4',
+    edit:  './assets/videos/desertsuv_edit.mp4',
+    edit_checker: './assets/videos/desertsuv_edit_checker.mp4',
+    composite: './assets/videos/desertsuv_vera.mp4',
+    prompt: 'Change the background to a dusty desert canyon road with red rock formations towering on both sides, dust clouds kicking up behind the tires as they react to the movement, tumbleweeds rolling across the path, heat shimmer rising from the ground, hard neutral daylight from the top. Wide shot, eye-level, deep depth of field, pan right. Keep the silver compact SUV driving forward intact.'
+  },
+  'rainguitarist': {
+    input: './assets/videos/rainguitarist_input.mp4',
+    edit:  './assets/videos/rainguitarist_edit.mp4',
+    edit_checker: './assets/videos/rainguitarist_edit_checker.mp4',
+    composite: './assets/videos/rainguitarist_vera.mp4',
+    prompt: 'Change the background to a blurred rainy London street corner with a red double-decker bus passing in the distance, pedestrians with umbrellas walking by, rain droplets falling softly, soft neutral ambient light from overcast source. Medium shot, eye-level, static camera, shallow depth of field. Keep the young woman playing an acoustic guitar intact.'
+  },
+  'alpscyclist': {
+    input: './assets/videos/alpscyclist_input.mp4',
+    edit:  './assets/videos/alpscyclist_edit.mp4',
+    edit_checker: './assets/videos/alpscyclist_edit_checker.mp4',
+    composite: './assets/videos/alpscyclist_vera.mp4',
+    prompt: 'Change the background to a steep winding mountain road in the Swiss Alps with snow-capped peaks in the distance, lush green grass swaying violently in the wind, scattered clouds drifting quickly across the blue sky, hard neutral sunlight from overhead. Full shot, low angle, tracking camera. Keep the male cyclist in blue jersey and helmet intact.'
+  },
+  'sunrisejogger': {
+    input: './assets/videos/sunrisejogger_input.mp4',
+    edit:  './assets/videos/sunrisejogger_edit_checker.mp4',
+    edit_checker: './assets/videos/sunrisejogger_edit.mp4',
+    hover_hint: 'Hover for edit layer',
+    composite: './assets/videos/sunrisejogger_vera.mp4',
+    prompt: 'Add a young woman in a fitted black running top and grey leggings jogging steadily down the center of the road, moving away from the viewer with a rhythmic stride, her dark ponytail swaying side to side, bathed in the warm back-lit glow of the sunrise that creates a golden rim along her silhouette. Wide shot, eye-level, everything in focus.'
+  },
+  'duffelbag': {
+    input: './assets/videos/duffelbag_input.mp4',
+    edit:  './assets/videos/duffelbag_edit_checker.mp4',
+    edit_checker: './assets/videos/duffelbag_edit.mp4',
+    hover_hint: 'Hover for edit layer',
+    composite: './assets/videos/duffelbag_vera.mp4',
+    prompt: 'Add a dark blue nylon sports duffel bag sitting on the ground in the background near the base of the chain-link fence to the left of the girl, facing forward at a slight angle, with natural light creating highlights on its fabric surface. Medium shot, eye-level, blurred background.'
   }
 };
 
