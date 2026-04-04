@@ -187,7 +187,7 @@
                 </div>
                 <div class="column has-text-centered">
                   <div class="joint-output-wrapper" id="teaser-edit-wrapper">
-                    <span class="hover-hint" id="teaser-edit-hint">Hover for edit layer</span>
+                    <span class="hover-hint" id="teaser-edit-hint">Hover for raw RGB</span>
                     <video id="teaser-edit" class="video demo-video joint-output" loop playsinline autoplay muted>
                       <source src="./assets/videos/turtle_edit_checker_1.3b.mp4" type="video/mp4">
                     </video>
@@ -486,10 +486,20 @@
               <p>
                 We construct a layered dataset to train our model using data pipelines that combine automated tools with manual annotations (see paper for details).
                 The full corpus contains <b>486K frames</b> at 832&times;480 resolution, organized into three complementary subsets:
-                <b>synthetic composites</b> derived from VideoMatte240K with synthetic backgrounds;
-                <b>realistic single-object videos</b> from Pexels and Mixkit with natural camera motion; and
+                <b>synthetic composites</b> derived from <a href="https://grail.cs.washington.edu/projects/background-matting-v2/#/" target="_blank" rel="noopener noreferrer">VideoMatte240K</a> with synthetic backgrounds;
+                <b>realistic single-object videos</b> from <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a> and <a href="https://mixkit.co" target="_blank" rel="noopener noreferrer">Mixkit</a> with natural camera motion; and
                 <b>realistic multi-object videos with effects</b> including shadows, reflections, occlusion, etc.
                 Below are representative samples per subset: each row shows the input video, alpha matte, edit layer (RGB), and target composite, with the text editing instruction.
+              </p>
+            </div>
+            <div class="content" style="max-width: 920px; margin-left: auto; margin-right: auto; margin-bottom: 1.5rem;">
+              <p class="is-size-7 has-text-grey">
+                <b>Data sources &amp; acknowledgments:</b>
+                We gratefully acknowledge the following sources used in constructing our dataset.
+                Synthetic composites are derived from <a href="https://grail.cs.washington.edu/projects/background-matting-v2/#/" target="_blank" rel="noopener noreferrer">VideoMatte240K</a>.
+                Real stock footage is sourced from <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a>
+                and <a href="https://mixkit.co" target="_blank" rel="noopener noreferrer">Mixkit</a> under their respective free-use licenses;
+                please refer to each platform for full license terms.
               </p>
             </div>
             <div style="margin-bottom: 1rem;">
@@ -633,7 +643,7 @@ const TEASER_SCENES = {
     input: './assets/videos/turtle_input.mp4',
     edit:  './assets/videos/turtle_edit_checker_1.3b.mp4',
     edit_checker: './assets/videos/turtle_edit_1.3b.mp4',
-    hover_hint: 'Hover for edit layer',
+    hover_hint: 'Hover for raw RGB',
     composite: './assets/videos/turtle_vera_1.3b.mp4',
     prompt: 'Add a massive sea turtle with a textured olive-green shell and weathered flippers swimming gracefully in the upper right open water area, propelling itself forward with slow rhythmic strokes while facing left in a three-quarter view, soft cool natural daylight from the top illuminating the patterns on its shell. Medium-wide shot, eye-level, everything in focus.'
   },
@@ -641,7 +651,7 @@ const TEASER_SCENES = {
     input: './assets/videos/driftwood_input.mp4',
     edit:  './assets/videos/driftwood_edit_checker_1.3b.mp4',
     edit_checker: './assets/videos/driftwood_edit_1.3b.mp4',
-    hover_hint: 'Hover for edit layer',
+    hover_hint: 'Hover for raw RGB',
     composite: './assets/videos/driftwood_vera_1.3b.mp4',
     prompt: 'Add a large, weathered grey driftwood log lying horizontally on the sand to the left of the girl in the foreground, facing diagonally toward the water, with rough textured bark illuminated by the high sun. Medium shot, eye-level, sharp background.'
   },
@@ -649,7 +659,7 @@ const TEASER_SCENES = {
     input: './assets/videos/swan_input.mp4',
     edit:  './assets/videos/swan_edit_checker.mp4',
     edit_checker: './assets/videos/swan_edit.mp4',
-    hover_hint: 'Hover for edit layer',
+    hover_hint: 'Hover for raw RGB',
     composite: './assets/videos/swan_vera.mp4',
     prompt: 'Add a graceful white swan gliding smoothly across the calm water in the foreground from left to right, its long neck curved elegantly and head held high, facing right in profile, with soft diffuse light illuminating its bright feathers against the dark lake surface. Wide shot, eye-level, everything in focus.'
   },
@@ -657,7 +667,7 @@ const TEASER_SCENES = {
     input: './assets/videos/fox_input.mp4',
     edit:  './assets/videos/fox_edit_checker.mp4',
     edit_checker: './assets/videos/fox_edit.mp4',
-    hover_hint: 'Hover for edit layer',
+    hover_hint: 'Hover for raw RGB',
     composite: './assets/videos/fox_vera.mp4',
     prompt: 'Add a red fox with vibrant orange fur, white chest, and a bushy tail standing amidst the tall wheat on the left side of the frame, pausing to look curiously toward the camera.'
   },
@@ -714,7 +724,7 @@ const TEASER_SCENES = {
     input: './assets/videos/sunrisejogger_input.mp4',
     edit:  './assets/videos/sunrisejogger_edit_checker.mp4',
     edit_checker: './assets/videos/sunrisejogger_edit.mp4',
-    hover_hint: 'Hover for edit layer',
+    hover_hint: 'Hover for raw RGB',
     composite: './assets/videos/sunrisejogger_vera.mp4',
     prompt: 'Add a young woman in a fitted black running top and grey leggings jogging steadily down the center of the road, moving away from the viewer with a rhythmic stride, her dark ponytail swaying side to side, bathed in the warm back-lit glow of the sunrise that creates a golden rim along her silhouette. Wide shot, eye-level, everything in focus.'
   },
@@ -722,7 +732,7 @@ const TEASER_SCENES = {
     input: './assets/videos/duffelbag_input.mp4',
     edit:  './assets/videos/duffelbag_edit_checker.mp4',
     edit_checker: './assets/videos/duffelbag_edit.mp4',
-    hover_hint: 'Hover for edit layer',
+    hover_hint: 'Hover for raw RGB',
     composite: './assets/videos/duffelbag_vera.mp4',
     prompt: 'Add a dark blue nylon sports duffel bag sitting on the ground in the background near the base of the chain-link fence to the left of the girl, facing forward at a slight angle, with natural light creating highlights on its fabric surface. Medium shot, eye-level, blurred background.'
   }
@@ -897,7 +907,7 @@ function selectTeaserScene(key, pillEl) {
 
   const hasBgHover = !!cfg.edit_checker;
   hint.style.display = hasBgHover ? '' : 'none';
-  hint.textContent = cfg.hover_hint || 'Hover for alpha matte';
+  hint.textContent = cfg.hover_hint || 'Hover for RGBA';
 
   const sources = [
     [inputV, cfg.input],
