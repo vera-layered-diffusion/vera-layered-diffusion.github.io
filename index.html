@@ -5,9 +5,30 @@
   <meta name="description" content="Vera: A Layered Diffusion Model for Content-Preserving Video Editing">
   <meta name="keywords" content="Vera, Video Editing, Diffusion Models, Layered Generation, Content Preservation">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vera</title>
+  <title>Vera: A Layered Diffusion Model for Content-Preserving Video Editing</title>
 
   <style>.hr {width: 100%; height: 1px; margin: 48px 0; background-color: #d6dbdf;}</style>
+  <style>
+    .metric-tip {
+      cursor: pointer;
+      border-bottom: 1px dashed #888;
+      white-space: nowrap;
+    }
+    #metric-tooltip {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      background: #1a1a2e;
+      color: #f0f0f0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      max-width: 260px;
+      line-height: 1.5;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
+  </style>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/bulma.min.css">
@@ -34,7 +55,7 @@
   <a href="#comparisons" class="toc-item">Qualitative Comparisons</a>
   <a href="#results" class="toc-item">Quantitative Results</a>
   <a href="#user-study" class="toc-item">User Study</a>
-  <a href="#dataset" class="toc-item">Data</a>
+  <a href="#dataset" class="toc-item">Dataset</a>
 </nav>
 
 <!-- ==================== TITLE ==================== -->
@@ -52,7 +73,7 @@
             <span class="author-block"><a href="https://ttchengab.github.io/" target="_blank">Ta-Ying Cheng</a><sup>2</sup>,&nbsp;&nbsp;</span>
             <span class="author-block"><a href="https://scholar.google.com/citations?user=xkX9W9QAAAAJ&amp;hl=en" target="_blank">Benjamin Klein</a><sup>2</sup>,&nbsp;&nbsp;</span>
             <span class="author-block"><a href="https://yisongyue.com/" target="_blank">Yisong Yue</a><sup>1</sup>,&nbsp;&nbsp;</span>
-            <span class="author-block"><a href="https://zhuoning.cc/" target="_blank">Zhuoning Yuan</a><sup>2,&Dagger;</sup></span>
+            <span class="author-block"><a href="https://zhuoning.cc/" target="_blank">Zhuoning Yuan</a><sup>2,&Dagger;</sup>&nbsp;<span onclick="navigator.clipboard.writeText('yzhuoning@gmail.com')" style="cursor:pointer;" title="Copy email"><i class="fas fa-envelope"></i></span></span>
           </div>
 
           <div class="is-size-5 publication-authors">
@@ -79,14 +100,6 @@
                   <span>Code</span>
                 </a>
               </span>
-              <!-- Weights (vera-14B) -->
-              <span class="link-block">
-                <a href="https://huggingface.co/netflix/Vera-MoT-14B" target="_blank"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon" aria-hidden="true">🤗</span>
-                  <span>Vera-14B</span>
-                </a>
-              </span>
               <!-- Weights (vera-1.3B) -->
               <span class="link-block">
                 <a href="https://huggingface.co/netflix/Vera-MoT-1.3B" target="_blank"
@@ -95,14 +108,22 @@
                   <span>Vera-1.3B</span>
                 </a>
               </span>
-              <!-- Dataset -->
-              <!-- <span class="link-block">
-                <a href="https://huggingface.co/datasets/hzzheng/vera-data-mini" target="_blank"
+              <!-- Weights (vera-14B) -->
+              <span class="link-block">
+                <a href="https://huggingface.co/netflix/Vera-MoT-14B" target="_blank"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon" aria-hidden="true">🤗</span>
-                  <span>Data</span>
+                  <span>Vera-14B</span>
                 </a>
-              </span> -->
+              </span>
+              <!-- Dataset -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/netflix/Vera-Layered-Video-Dataset" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon" aria-hidden="true">🤗</span>
+                  <span>Dataset</span>
+                </a>
+              </span>
               <span class="link-block">
                 <a href="#BibTeX"
                    class="external-link button is-normal is-rounded is-dark">
@@ -416,27 +437,18 @@
                 <th colspan="2" class="col-group">Instruction Compliance</th>
               </tr>
               <tr>
-                <th>PSNR &uarr;</th>
-                <th>SSIM &uarr;</th>
-                <th>LPIPS &darr;</th>
-                <th>OC &uarr;</th>
-                <th>TF &uarr;</th>
-                <th>CS &uarr;</th>
-                <th>CT &uarr;</th>
-                <th>OSC &uarr;</th>
-                <th>IS &uarr;</th>
+                <th><span class="metric-tip" data-tip="Peak signal-to-noise ratio">PSNR</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Structural similarity">SSIM</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Learned perceptual similarity">LPIPS</span> &darr;</th>
+                <th><span class="metric-tip" data-tip="Overall consistency: avg. of subject (DINO) and background (CLIP) consistency across frames">OC</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Temporal flickering: mean frame difference">TF</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Spatial composition quality, VLM-judged per-frame, avg. over 3 VLMs">CS</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Temporal composition quality, VLM-judged coherence, avg. over 3 VLMs">CT</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Semantic consistency with target prompt via VideoCLIP-XL2">OSC</span> &uarr;</th>
+                <th><span class="metric-tip" data-tip="Instruction satisfaction, VLM-judged on 5-point scale, avg. over 3 VLMs">IS</span> &uarr;</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="group-header"><td colspan="10"><em>Background Change</em></td></tr>
-              <tr><td>Ditto</td><td>21.7</td><td>0.888</td><td>0.092</td><td>0.97</td><td>0.97</td><td>3.29</td><td>3.25</td><td>0.240</td><td>4.26</td></tr>
-              <tr><td>Lucy-Edit</td><td>22.3</td><td>0.908</td><td>0.078</td><td>0.96</td><td>0.96</td><td>2.50</td><td>2.50</td><td>0.235</td><td>3.71</td></tr>
-              <tr><td>VideoPainter</td><td>29.9</td><td>0.975</td><td>0.032</td><td>0.83</td><td>0.97</td><td>2.29</td><td>2.31</td><td>0.237</td><td>3.64</td></tr>
-              <tr><td>VACE-1.3B</td><td>31.5</td><td>0.981</td><td>0.024</td><td>0.96</td><td>0.97</td><td><b>3.74</b></td><td><b>3.61</b></td><td><b>0.245</b></td><td><b>4.48</b></td></tr>
-              <tr><td>VACE-14B</td><td>31.7</td><td>0.983</td><td>0.021</td><td>0.96</td><td>0.96</td><td>3.68</td><td>3.59</td><td>0.243</td><td>4.44</td></tr>
-              <tr><td>ReCo</td><td>24.9</td><td>0.935</td><td>0.061</td><td>0.96</td><td>0.97</td><td>2.45</td><td>2.71</td><td>0.220</td><td>3.05</td></tr>
-              <tr class="highlight-row"><td>Vera-1.3B</td><td>35.2</td><td><b>0.993</b></td><td><b>0.010</b></td><td>0.96</td><td>0.97</td><td>3.34</td><td>3.25</td><td>0.243</td><td>4.35</td></tr>
-              <tr class="highlight-row"><td>Vera-14B</td><td><b>36.2</b></td><td><b>0.993</b></td><td><b>0.010</b></td><td>0.96</td><td>0.97</td><td>3.28</td><td>3.21</td><td>0.242</td><td>4.38</td></tr>
               <tr class="group-header"><td colspan="10"><em>Object Addition</em></td></tr>
               <tr><td>Ditto</td><td>13.1</td><td>0.447</td><td>0.529</td><td>0.98</td><td>0.98</td><td>2.84</td><td>3.13</td><td>0.239</td><td>3.62</td></tr>
               <tr><td>Lucy-Edit</td><td>19.0</td><td>0.798</td><td>0.301</td><td>0.98</td><td>0.98</td><td>2.54</td><td>2.79</td><td>0.238</td><td>2.98</td></tr>
@@ -446,6 +458,15 @@
               <tr><td>ReCo</td><td>16.8</td><td>0.778</td><td>0.280</td><td>0.98</td><td>0.98</td><td>3.18</td><td>3.35</td><td>0.243</td><td>3.77</td></tr>
               <tr class="highlight-row"><td>Vera-1.3B</td><td>25.3</td><td>0.949</td><td><b>0.078</b></td><td>0.98</td><td>0.98</td><td>3.49</td><td>3.47</td><td>0.243</td><td>4.05</td></tr>
               <tr class="highlight-row"><td>Vera-14B</td><td><b>26.1</b></td><td><b>0.950</b></td><td>0.082</td><td>0.98</td><td>0.98</td><td><b>3.59</b></td><td><b>3.66</b></td><td>0.244</td><td><b>4.13</b></td></tr>
+              <tr class="group-header"><td colspan="10"><em>Background Change</em></td></tr>
+              <tr><td>Ditto</td><td>21.7</td><td>0.888</td><td>0.092</td><td>0.97</td><td>0.97</td><td>3.29</td><td>3.25</td><td>0.240</td><td>4.26</td></tr>
+              <tr><td>Lucy-Edit</td><td>22.3</td><td>0.908</td><td>0.078</td><td>0.96</td><td>0.96</td><td>2.50</td><td>2.50</td><td>0.235</td><td>3.71</td></tr>
+              <tr><td>VideoPainter</td><td>29.9</td><td>0.975</td><td>0.032</td><td>0.83</td><td>0.97</td><td>2.29</td><td>2.31</td><td>0.237</td><td>3.64</td></tr>
+              <tr><td>VACE-1.3B</td><td>31.5</td><td>0.981</td><td>0.024</td><td>0.96</td><td>0.97</td><td><b>3.74</b></td><td><b>3.61</b></td><td><b>0.245</b></td><td><b>4.48</b></td></tr>
+              <tr><td>VACE-14B</td><td>31.7</td><td>0.983</td><td>0.021</td><td>0.96</td><td>0.96</td><td>3.68</td><td>3.59</td><td>0.243</td><td>4.44</td></tr>
+              <tr><td>ReCo</td><td>24.9</td><td>0.935</td><td>0.061</td><td>0.96</td><td>0.97</td><td>2.45</td><td>2.71</td><td>0.220</td><td>3.05</td></tr>
+              <tr class="highlight-row"><td>Vera-1.3B</td><td>35.2</td><td><b>0.993</b></td><td><b>0.010</b></td><td>0.96</td><td>0.97</td><td>3.34</td><td>3.25</td><td>0.243</td><td>4.35</td></tr>
+              <tr class="highlight-row"><td>Vera-14B</td><td><b>36.2</b></td><td><b>0.993</b></td><td><b>0.010</b></td><td>0.96</td><td>0.97</td><td>3.28</td><td>3.21</td><td>0.242</td><td>4.38</td></tr>
             </tbody>
           </table>
         </div>
@@ -481,10 +502,10 @@
       <div class="row bg-dark">
         <div class="demo-block">
           <div class="has-text-centered text-center">
-            <h2 class="title is-3 gradient-title">Data</h2>
+            <h2 class="title is-3 gradient-title">Dataset</h2>
             <div class="content has-text-justified" style="margin-bottom: 1.5rem; max-width: 920px; margin-left: auto; margin-right: auto;">
               <p>
-                We construct a layered dataset to train our model using data pipelines that combine automated tools with manual annotations (see paper for details).
+                We construct a layered video dataset to train our model using data pipelines that combine automated tools with manual annotations (see paper for details).
                 The full corpus contains <b>486K frames</b> at 832&times;480 resolution, organized into three complementary subsets:
                 <b>synthetic composites</b> derived from <a href="https://grail.cs.washington.edu/projects/background-matting-v2/#/" target="_blank" rel="noopener noreferrer">VideoMatte240K</a> with synthetic backgrounds;
                 <b>realistic single-object videos</b> from <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a> and <a href="https://mixkit.co" target="_blank" rel="noopener noreferrer">Mixkit</a> with natural camera motion; and
@@ -1182,5 +1203,38 @@ function copyBibtex(btn) {
 }
 </script>
 
+
+<div id="metric-tooltip"></div>
+<script>
+  (function () {
+    const tooltip = document.getElementById('metric-tooltip');
+    let activeEl = null;
+
+    document.querySelectorAll('.metric-tip').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (activeEl === el && tooltip.style.display === 'block') {
+          tooltip.style.display = 'none';
+          activeEl = null;
+          return;
+        }
+        activeEl = el;
+        tooltip.textContent = el.getAttribute('data-tip');
+        tooltip.style.display = 'block';
+        var rect = el.getBoundingClientRect();
+        var top = rect.bottom + 6;
+        var left = rect.left;
+        if (left + 260 > window.innerWidth) left = window.innerWidth - 268;
+        tooltip.style.top = top + 'px';
+        tooltip.style.left = left + 'px';
+      });
+    });
+
+    document.addEventListener('click', function () {
+      tooltip.style.display = 'none';
+      activeEl = null;
+    });
+  })();
+</script>
 </body>
 </html>
