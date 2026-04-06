@@ -56,6 +56,7 @@
   <a href="#results" class="toc-item">Quantitative Results</a>
   <a href="#user-study" class="toc-item">User Study</a>
   <a href="#dataset" class="toc-item">Dataset</a>
+  <a href="#limitations" class="toc-item">Limitations & Future Work</a>
 </nav>
 
 <!-- ==================== TITLE ==================== -->
@@ -628,6 +629,38 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== LIMITATIONS ==================== -->
+<section class="section" id="limitations">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h2 class="title is-3 gradient-title">Limitations & Future Work</h2>
+        <div class="content has-text-justified">
+          <ul>
+            <li>
+              Joint self-attention over all layer tokens makes Vera's inference more expensive than standard V2V models.
+              Future work can apply distillation techniques of video diffusion models to reduce this cost.
+            </li>
+            <li>
+              Vera-1.3B does not always produce background with camera motion consistent with the input video.
+              Vera-14B largely resolves this. A stronger language backbone with dedicated text-modality parameters (e.g. MMDiT) would mitigate this.
+            </li>
+            <li>
+              When adding objects, the model occasionally
+              misinterprets spatial references in the prompt as objects to generate. 
+            </li>
+            <li>
+              Complex effects like lightning or smoke fall outside the training distribution. The predicted alpha matte can
+              also exhibit boundary artifacts in difficult cases, though Vera's layered
+              output allows the matte to be refined post-hoc without regenerating the edit.
+            </li>
+          </ul>
         </div>
       </div>
     </div>
