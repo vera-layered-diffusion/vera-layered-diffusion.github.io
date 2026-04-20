@@ -129,7 +129,7 @@
       <div class="column has-text-centered">
         <video id="promo-video" autoplay muted loop playsinline
                style="width:80%; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.35);">
-          <source src="./assets/videos/vera-promo-v5.mp4" type="video/mp4">
+          <source src="./assets/videos/vera-promo-video-v5-0.7x.mp4" type="video/mp4">
         </video>
         <p style="text-align:center; margin-top:0.75rem; font-size:0.85rem; color:#888;">
           <b>Disclaimer:</b> this is a research prototype, not an official Netflix product.
@@ -1031,7 +1031,7 @@ function onBaselineChange() {
 
 document.addEventListener('DOMContentLoaded', function () {
   const promoVideo = document.getElementById('promo-video');
-  if (promoVideo) promoVideo.playbackRate = 0.85;
+  if (promoVideo) promoVideo.playbackRate = 1.0;
 
   // Teaser: initial load fade-in
   const teaserVideos = ['teaser-input', 'teaser-edit', 'teaser-edit-checker', 'teaser-composite']
