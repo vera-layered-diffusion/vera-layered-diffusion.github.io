@@ -56,7 +56,7 @@
   <a href="#results" class="toc-item">Quantitative Results</a>
   <a href="#user-study" class="toc-item">User Study</a>
   <a href="#dataset" class="toc-item">Dataset</a>
-  <a href="#limitations" class="toc-item">Limitations & Future Work</a>
+  <a href="#limitations" class="toc-item">Conclusion and Limitations</a>
 </nav>
 
 <!-- ==================== TITLE ==================== -->
@@ -112,9 +112,10 @@
           </div>
 
           <div class="tldr-card">
-            <b>TL;DR:</b> A layered diffusion framework for content-preserving video editing.
-            Instead of regenerating every pixel, Vera generates an <b>edit layer</b> and an <b>alpha matte</b>
-            for compositing with the source video, separating creative editing from content preservation by design.
+            <b>TL;DR:</b> A layered diffusion framework for video editing that combines the explicit control of
+            traditional editing software with the generative capabilities of video diffusion models. Vera jointly
+            generates an <b>edit layer</b>, an <b>alpha matte</b>, and a <b>composite video</b>, separating what to
+            generate from what to preserve.
           </div>
         </div>
       </div>
@@ -615,27 +616,27 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-10">
-        <h2 class="title is-3 gradient-title">Limitations & Future Work</h2>
+        <h2 class="title is-3 gradient-title">Conclusion and Limitations</h2>
         <div class="content has-text-justified">
-          <ul>
-            <li>
-              Joint self-attention over all layer tokens makes Vera's inference more expensive than standard V2V models.
-              Future work can apply distillation techniques of video diffusion models to reduce this cost.
-            </li>
-            <li>
-              Vera-1.3B does not always produce background with camera motion consistent with the input video.
-              Vera-14B largely resolves this. A stronger language backbone with dedicated text-modality parameters (e.g. MMDiT) would mitigate this.
-            </li>
-            <li>
-              When adding objects, the model occasionally
-              misinterprets spatial references in the prompt as objects to generate. 
-            </li>
-            <li>
-              Complex effects like lightning or smoke fall outside the training distribution. The predicted alpha matte can
-              also exhibit boundary artifacts in difficult cases, though Vera's layered
-              output allows the matte to be refined post-hoc without regenerating the edit.
-            </li>
-          </ul>
+          <p>
+            Vera builds layer structure into diffusion models for video editing, combining the explicit control of
+            traditional editing software with the generative capabilities of modern video diffusion models. It jointly
+            produces an edit layer, an alpha matte, and a composite video, separating what to generate from what to
+            preserve, and the resulting editable layers naturally support the iterative refinement required in
+            professional VFX workflows. Three ingredients make this possible: an MoT architecture with cross-layer
+            interaction through joint self-attention, composite-branch supervision, and curated layered data with
+            accurately aligned edit layers and alpha mattes.
+          </p>
+          <p>
+            Three limitations remain in this work. First, jointly generating three layers increases inference cost:
+            Vera-1.3B is roughly 3x slower than VACE. Second, our evaluation is limited to object addition and
+            background replacement. Extending the approach to relighting, complex visual effects, and broader editing
+            operations will require layered supervision that captures the corresponding interactions. Third, our
+            inference procedure approximates the preserved video with the source video and therefore assumes that
+            preserved content contains only small semi-transparent regions. Direct recovery in cases such as glass or
+            water requires suitable layered training data and explicit evaluation. Addressing these boundaries would
+            extend layered generation toward a broader set of production editing operations.
+          </p>
         </div>
       </div>
     </div>
